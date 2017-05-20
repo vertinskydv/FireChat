@@ -1,0 +1,22 @@
+{
+  "name": "firechat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vertinskydv/FireChat.git"
+  },
+  "author": "Dmitry Vertinsky",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vertinskydv/FireChat/issues"
+  },
+  "homepage": "https://github.com/vertinskydv/FireChat#readme",
+  "devDependencies": {
+    "@angular/cli": "^1.0.4"
+  }
+}
