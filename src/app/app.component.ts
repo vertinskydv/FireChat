@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFire } from 'angularfire2';
 import { Observable } from 'rxjs/Observable';
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
+
 
 @Component({
   selector: 'app-root',
@@ -10,33 +10,22 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  user: Observable<any>;
-  items: FirebaseListObservable<any[]>;
-  msgVal: string = '';
+  user: Observable<firebase.User>;
 
-  constructor(public af: AngularFire) {
-    this.items = af.list('/messages', {
-      query: {
-        limitToLast: 50
-      }
-    });
-
-    this.
-
-    this.user = this.afAuth.authState;
+  constructor(public afAuth: AngularFireAuth) {
+    this.user = afAuth.authState;
   }
 
   login() {
-    debugger;
-    this.afAuth.auth.signInAnonymously();
+    this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
   }
 
   logout() {
     this.afAuth.auth.signOut();
   }
 
-  Send(desc: string) {
-    this.items.push({ message: desc});
-    this.msgVal = '';
+  show() {
+    console.log(this.user);
   }
+
 }

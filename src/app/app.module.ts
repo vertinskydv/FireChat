@@ -5,17 +5,9 @@ import { HttpModule } from '@angular/http';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-
-export const firebaseConfig = {
-  apiKey: "AIzaSyAF2fSr3TUhkOmqimosTodig1SHXjCc6Ko",
-  authDomain: "firechat-74899.firebaseapp.com",
-  databaseURL: "https://firechat-74899.firebaseio.com",
-  projectId: "firechat-74899",
-  storageBucket: "firechat-74899.appspot.com",
-  messagingSenderId: "561984598484"
-};
 
 @NgModule({
   declarations: [
@@ -25,7 +17,7 @@ export const firebaseConfig = {
     BrowserModule,
     FormsModule,
     HttpModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule
   ],
