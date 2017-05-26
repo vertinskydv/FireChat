@@ -6,6 +6,9 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
+import 'hammerjs';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MaterialModule } from './material.module';
 
 import { AppComponent } from './app.component';
 
@@ -19,7 +22,9 @@ import { AppComponent } from './app.component';
     HttpModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
