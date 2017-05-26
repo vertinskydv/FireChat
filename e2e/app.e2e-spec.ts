@@ -1,10 +1,10 @@
-import { FirecharPage } from './app.po';
+import { ProjPage } from './app.po';
 
-describe('firechar App', () => {
-  let page: FirecharPage;
+describe('proj App', () => {
+  let page: ProjPage;
 
   beforeEach(() => {
-    page = new FirecharPage();
+    page = new ProjPage();
   });
 
   it('should display message saying app works', () => {
