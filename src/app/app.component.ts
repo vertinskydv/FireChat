@@ -29,8 +29,8 @@ export class AppComponent {
   }
 
   writeUserData(message) {
-  firebase.database().ref('messages/').set({
-    'message': message
-  });
-}
+    firebase.database().ref('messages/').set({
+      'message': message
+    });
+  }
 }
