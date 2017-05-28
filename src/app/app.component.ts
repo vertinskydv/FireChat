@@ -10,6 +10,7 @@ import * as firebase from 'firebase/app';
 })
 export class AppComponent {
   user: Observable<firebase.User>;
+  currentMessage: any;
 
   constructor(public afAuth: AngularFireAuth) {
     this.user = afAuth.authState;
@@ -26,4 +27,10 @@ export class AppComponent {
   show() {
     console.log(this.user);
   }
+
+  writeUserData(message) {
+  firebase.database().ref('messages/').set({
+    'message': message
+  });
+}
 }

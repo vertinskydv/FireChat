@@ -3,6 +3,17 @@
     <button md-raised-button class="header__btn" color="primary" (click)="logout()" *ngIf="(user | async)?.uid">Logout</button>
     <button md-raised-button class="header__btn" color="primary" (click)="login()" *ngIf="!(user | async)?.uid">Login with Facebook</button>
   </header>
+  <main>
+    <div id="messages" class="message-box"></div>
+
+    <section class="send-box">
+      <md-input-container color="primary" class="send__input">
+        <textarea mdInput maxRows='25' [(ngModel)]="currentMessage" mdTextareaAutosize placeholder="Enter your message"></textarea>
+      </md-input-container>
+      <button md-raised-button color="primary" (click)="writeUserData(currentMessage)"  class="send__btn">SEND</button>
+
+    </section>
+  </main>
 </main>
 
 
