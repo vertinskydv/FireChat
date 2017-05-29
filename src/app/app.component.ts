@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
@@ -8,12 +8,13 @@ import * as firebase from 'firebase/app';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   user: Observable<firebase.User>;
-  currentMessage: any;
+  userData: any;
+  chatData: any;
+  currentMessage: string;
 
   constructor(public afAuth: AngularFireAuth) {
-    this.user = afAuth.authState;
   }
 
   login() {
@@ -24,13 +25,38 @@ export class AppComponent {
     this.afAuth.auth.signOut();
   }
 
-  show() {
-    console.log(this.user);
+  getUserData () {
+    this.user.subscribe(data => {
+      this.userData = data;
+      // console.log(data);
+    });
   }
 
-  writeUserData(message) {
-    firebase.database().ref('messages/').set({
-      'message': message
+  sendMessage(message) {
+    if (this.chatData.lastMessageId === -1) {
+      let messageId = this.chatData['lastMessageId'] += 1;
+        firebase.database().ref('chats/chat1/messages').set({
+          [messageId] : message
+        });
+    }
+
+    // firebase.database().ref('chats/chat1/messages').set({
+    //   'message': message
+    // });
+    // firebase.database().ref('chats/chart1/').set({
+    //   'lastMessgeId': this.chatData['lastMessageId'] += 1
+    // });
+  }
+
+  getChatData() {
+    firebase.database().ref('/chats/chat1').once('value').then((snapshot) => {
+      this.chatData = snapshot.val();
     });
+  }
+
+  ngOnInit() {
+    this.user = this.afAuth.authState;
+    this.getUserData();
+    this.getChatData();
   }
 }
