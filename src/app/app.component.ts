@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   user: Observable<firebase.User>;
   userData: any;
   chatData: any;
-  currentMessage: string;
+  currentMessage: string = '';
 
   constructor(public afAuth: AngularFireAuth) {
   }
@@ -33,12 +33,15 @@ export class AppComponent implements OnInit {
   }
 
   sendMessage(message) {
-    if (this.chatData.lastMessageId === -1) {
-      let messageId = this.chatData['lastMessageId'] += 1;
+    if (typeof message !== 'undefined') {
+      if ((this.chatData.lastMessageId === -1) || (message.search(/\S/g) !== -1))  {
+        let messageId = this.chatData['lastMessageId'] += 1;
         firebase.database().ref('chats/chat1/messages').set({
           [messageId] : message
         });
+      }
     }
+
 
     // firebase.database().ref('chats/chat1/messages').set({
     //   'message': message
