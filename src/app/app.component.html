@@ -12,9 +12,9 @@
 
     <section class="send-box">
       <md-input-container color="primary" class="send__input">
-        <textarea mdInput maxRows='25' [(ngModel)]="currentMessage" mdTextareaAutosize placeholder="Enter your message"></textarea>
+        <textarea mdInput maxRows='25' [(ngModel)]="dialedMessage" mdTextareaAutosize placeholder="Enter your message"></textarea>
       </md-input-container>
-      <button md-raised-button color="primary" (click)="sendMessage(currentMessage)"  class="send__btn">SEND</button>
+      <button md-raised-button color="primary" (click)="sendMessage(dialedMessage)"  class="send__btn">SEND</button>
 
     </section>
   </main>

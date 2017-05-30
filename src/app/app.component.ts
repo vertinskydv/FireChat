@@ -12,7 +12,8 @@ export class AppComponent implements OnInit {
   user: Observable<firebase.User>;
   userData: any;
   chatData: any;
-  currentMessage: string = '';
+  dialedMessage: string = '';
+  currentChartName: string = 'chat1';
 
   constructor(public afAuth: AngularFireAuth) {
   }
@@ -32,14 +33,16 @@ export class AppComponent implements OnInit {
     });
   }
 
-  sendMessage(message) {
-    if (typeof message !== 'undefined') {
-      if ((this.chatData.lastMessageId === -1) || (message.search(/\S/g) !== -1))  {
-        let messageId = this.chatData['lastMessageId'] += 1;
-        firebase.database().ref('chats/chat1/messages').set({
-          [messageId] : message
-        });
-      }
+  sendMessage(message?: string) {
+    if ((typeof message !== 'undefined') || (message!.search(/\S/g) !== -1)) {
+      let updates = {};
+      let lastMessageId = this.chatData.lastMessageId;
+      let messageId = lastMessageId + 1;
+
+      updates['/chats/' + this.currentChartName + '/lastMessageId'] = messageId;
+      updates['chats/' + this.currentChartName + '/messages/' + messageId] = message;
+      firebase.database().ref().update(updates);
+      this.dialedMessage = '';
     }
 
 
@@ -51,15 +54,23 @@ export class AppComponent implements OnInit {
     // });
   }
 
+  listenChatData(chatName: string) {
+    let chatRef = firebase.database().ref('/chats/' + chatName);
+    chatRef.on('value', (snapshot) => {
+      this.chatData = snapshot.val();
+    });
+  }
+
   getChatData() {
     firebase.database().ref('/chats/chat1').once('value').then((snapshot) => {
       this.chatData = snapshot.val();
     });
   }
 
-  ngOnInit() {
+      ngOnInit() {
     this.user = this.afAuth.authState;
     this.getUserData();
     this.getChatData();
+    this.listenChatData(this.currentChartName);
   }
 }
