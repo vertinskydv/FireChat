@@ -35,9 +35,9 @@ export class AppComponent implements OnInit {
 
   sendMessage(message?: string) {
     if ((typeof message !== 'undefined') || (message!.search(/\S/g) !== -1)) {
-      let updates = {};
-      let lastMessageId = this.chatData.lastMessageId;
-      let messageId = lastMessageId + 1;
+      let updates = {},
+          lastMessageId = this.chatData.lastMessageId,
+          messageId = lastMessageId + 1;
 
       updates['/chats/' + this.currentChartName + '/lastMessageId'] = messageId;
       updates['chats/' + this.currentChartName + '/messages/' + messageId] = message;
