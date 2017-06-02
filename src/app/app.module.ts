@@ -8,13 +8,15 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import 'hammerjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MaterialModule } from './material.module';
+import { MaterialModule } from './shared/material.module';
+import { ToArrayPipe } from './shared/toarray.pipe';
 
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ToArrayPipe
   ],
   imports: [
     BrowserModule,

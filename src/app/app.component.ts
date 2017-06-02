@@ -54,32 +54,16 @@ export class AppComponent implements OnInit {
 
     database.ref('/chats/' + chatName + '/lastMessageId').on('value', (snapshot) => {
       chatData.lastMessageId = snapshot.val();
-      console.log(chatData.lastMessageId);
+      // console.log(chatData.lastMessageId);
     });
 
     database.ref('/chats/' + chatName + '/messages').limitToLast(30).on('value', (snapshot) => {
       chatData.messages = snapshot.val();
-      console.log(chatData.messages);
+      // console.log(chatData.messages);
     });
 
     return chatData;
   }
-
-  // getInitialChatData(chatName: string) {
-  //   let chatData: any = {},
-  //       database = firebase.database();
-  //   database.ref('/chats/' + chatName + '/lastMessageId').once('value').then((snapshot) => {
-  //     chatData.lastMessageId = snapshot.val();
-  //     console.log(chatData.lastMessageId);
-  //   });
-  //
-  //   database.ref('/chats/' + chatName + '/messages').limitToLast(10).once('value').then((snapshot) => {
-  //     chatData.messages = snapshot.val();
-  //     console.log(chatData.messages);
-  //   });
-  //
-  //   return chatData;
-  // }
 
   ngOnInit() {
     this.user = this.afAuth.authState;

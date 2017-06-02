@@ -5,9 +5,10 @@
   </header>
   <main *ngIf="(user | async)?.uid">
     <div id="messages" class="message-box">
-      <!--<div class="message-wrap clearfix">-->
-        <!--<p class="message_out">Lorem LoremLore mLorem LoremLorem LoremLoremLorem LoremLorem LoremLorem</p>-->
-      <!--</div>-->
+
+      <div class="message-wrap clearfix" *ngFor="let message of chatData.messages | toArray">
+        <p class="message_out"></p>
+      </div>
     </div>
 
     <section class="send-box">
