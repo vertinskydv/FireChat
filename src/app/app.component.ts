@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
   getUserData () {
     this.user.subscribe(data => {
       this.userData = data;
-      // console.log(data);
     });
   }
 
@@ -37,14 +36,17 @@ export class AppComponent implements OnInit {
     if ((typeof message !== 'undefined') && (message!.search(/\S/g) !== -1)) {
       let updates = {},
           lastMessageId = this.chatData.lastMessageId,
-          messageId = lastMessageId + 1;
-
-      updates['/chats/' + this.currentChatName + '/lastMessageId'] = messageId;
-      updates['chats/' + this.currentChatName + '/messages/' + messageId] = message;
-      firebase.database().ref().update(updates);
+          messageId = lastMessageId + 1,
+          database = firebase.database();
+      database.ref('chats/' + this.currentChatName + '/lastMessageId').set(messageId);
+      database.ref('chats/' + this.currentChatName + '/messages').push({
+        'message': message,
+        'time': Date.now(),
+        'user': this.userData.uid
+      });
       this.dialedMessage = '';
-    }
-  }
+   }
+}
 
   listenChatData(chatName: string) {
     let chatData: any = {},
@@ -52,36 +54,36 @@ export class AppComponent implements OnInit {
 
     database.ref('/chats/' + chatName + '/lastMessageId').on('value', (snapshot) => {
       chatData.lastMessageId = snapshot.val();
-      // console.log(chatData.lastMessageId);
-    });
-
-    database.ref('/chats/' + chatName + '/messages').on('value', (snapshot) => {
-      chatData.messages = snapshot.val();
-      // console.log(chatData.messages);
-    });
-
-  }
-
-  getInitialChatData(chatName: string) {
-    let chatData: any = {},
-        database = firebase.database();
-    database.ref('/chats/' + chatName + '/lastMessageId').once('value').then((snapshot) => {
-      chatData.lastMessageId = snapshot.val();
       console.log(chatData.lastMessageId);
     });
 
-    database.ref('/chats/' + chatName + '/messages').limitToLast(5).once('value').then((snapshot) => {
+    database.ref('/chats/' + chatName + '/messages').limitToLast(30).on('value', (snapshot) => {
       chatData.messages = snapshot.val();
       console.log(chatData.messages);
     });
 
-
+    return chatData;
   }
+
+  // getInitialChatData(chatName: string) {
+  //   let chatData: any = {},
+  //       database = firebase.database();
+  //   database.ref('/chats/' + chatName + '/lastMessageId').once('value').then((snapshot) => {
+  //     chatData.lastMessageId = snapshot.val();
+  //     console.log(chatData.lastMessageId);
+  //   });
+  //
+  //   database.ref('/chats/' + chatName + '/messages').limitToLast(10).once('value').then((snapshot) => {
+  //     chatData.messages = snapshot.val();
+  //     console.log(chatData.messages);
+  //   });
+  //
+  //   return chatData;
+  // }
 
   ngOnInit() {
     this.user = this.afAuth.authState;
     this.getUserData();
-    this.getInitialChatData(this.currentChatName);
-    this.listenChatData(this.currentChatName);
+    this.chatData = this.listenChatData(this.currentChatName);
   }
 }
