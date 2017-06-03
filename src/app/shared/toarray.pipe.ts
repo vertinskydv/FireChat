@@ -7,8 +7,9 @@ export class ToArrayPipe implements PipeTransform {
   transform(value: any, args?: any): any {
     if (value) {
       let result = [];
-      for (let item of value) {
-        result.push(item);
+      for (let key in value) {
+        result.push(value[key]);
+        console.log(value[key]);
       }
       console.log(result);
       return result;

@@ -39,6 +39,7 @@
 .message {
   &-box {
     padding: 10px 20px;
+    overflow-y: auto;
   }
 
   &_out {

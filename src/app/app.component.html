@@ -4,10 +4,10 @@
     <button md-raised-button class="header__btn" color="primary" (click)="login()" *ngIf="!(user | async)?.uid">Login with Facebook</button>
   </header>
   <main *ngIf="(user | async)?.uid">
-    <div id="messages" class="message-box">
+    <div #messageBox id="messages" class="message-box">
 
-      <div class="message-wrap clearfix" *ngFor="let message of chatData.messages | toArray">
-        <p class="message_out"></p>
+      <div class="message-wrap clearfix" *ngFor="let messageData of chatData.messages | toArray">
+        <p class="message_out">{{messageData.message}}</p>
       </div>
     </div>
 
