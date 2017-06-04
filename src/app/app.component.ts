@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
@@ -63,16 +63,9 @@ export class AppComponent implements OnInit {
     database.ref('/chats/' + chatName + '/messages').limitToLast(30).on('value', (snapshot) => {
       chatData.messages = snapshot.val();
       // console.log(chatData.messages);
-      this.scrollToBottom();
     });
 
     return chatData;
-  }
-
-  scrollToBottom() {
-    setTimeout(() => {
-      this.messageBox.nativeElement.scrollTop = this.messageBox.nativeElement.scrollHeight;
-    }, 100)
   }
 
   ngOnInit() {

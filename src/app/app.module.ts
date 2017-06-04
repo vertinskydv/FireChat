@@ -12,11 +12,13 @@ import { MaterialModule } from './shared/material.module';
 import { ToArrayPipe } from './shared/toarray.pipe';
 
 import { AppComponent } from './app.component';
+import { ScrollToBottomDirective } from './directives/scroll-to-bottom.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ToArrayPipe
+    ToArrayPipe,
+    ScrollToBottomDirective
   ],
   imports: [
     BrowserModule,
