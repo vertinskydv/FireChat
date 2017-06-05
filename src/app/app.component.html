@@ -4,10 +4,15 @@
     <button md-raised-button class="header__btn" color="primary" (click)="login()" *ngIf="!(user | async)?.uid">Login with Facebook</button>
   </header>
   <main *ngIf="(user | async)?.uid">
-    <div #messageBox id="messages" class="message-box">
+    <div #messageBox
+         id="messages"
+         class="message-box"
+         [firstMessage] = "chatData.firstMessageId"
+         infiniteScroller>
+
 
       <div class="message-wrap clearfix"
-           *ngFor="let messageData of chatData.messages | toArray; let lastMsg = last"
+           *ngFor="let messageData of chatData.messages | toArray; trackBy: messageData?.time; let lastMsg = last"
            scrollToBottom
            [ready]="lastMsg">
         <p class="message_out">{{messageData.message}}</p>

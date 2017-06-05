@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef } from '@angular/core';
+import { Directive, Input, ElementRef, AfterViewInit } from '@angular/core';
 
 @Directive({
   selector: '[scrollToBottom]'
@@ -13,7 +13,7 @@ export class ScrollToBottomDirective {
   set ready(isReady: boolean) {
     let scrollableElement = this.element.nativeElement.parentElement;
     if (isReady) {
-      setTimeout(()=>{scrollableElement.scrollTop = scrollableElement.scrollHeight;}, 5)
+      setTimeout(()=>{scrollableElement.scrollTop = scrollableElement.scrollHeight;}, 1)
     }
   }
 

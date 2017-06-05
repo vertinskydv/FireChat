@@ -13,12 +13,14 @@ import { ToArrayPipe } from './shared/toarray.pipe';
 
 import { AppComponent } from './app.component';
 import { ScrollToBottomDirective } from './directives/scroll-to-bottom.directive';
+import { InfiniteScrollerDirective } from './directives/infinite-scroller.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToArrayPipe,
-    ScrollToBottomDirective
+    ScrollToBottomDirective,
+    InfiniteScrollerDirective
   ],
   imports: [
     BrowserModule,
