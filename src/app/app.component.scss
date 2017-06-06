@@ -1,15 +1,5 @@
 @import "../scss/palette";
 
-.header {
-  height: 80px;
-  background-color: $primary-color;
-
-  &__btn {
-    float: right;
-    margin: 22px 22px 0 0;
-  }
-}
-
 .message-box {
   height: 70vh;
   margin: 20px;

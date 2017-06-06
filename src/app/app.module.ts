@@ -14,13 +14,19 @@ import { ToArrayPipe } from './shared/toarray.pipe';
 import { AppComponent } from './app.component';
 import { ScrollToBottomDirective } from './directives/scroll-to-bottom.directive';
 import { InfiniteScrollerDirective } from './directives/infinite-scroller.directive';
+import { MessageAreaComponent } from './components/message-area/message-area.component';
+import { InputAreaComponent } from './components/input-area/input-area.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToArrayPipe,
     ScrollToBottomDirective,
-    InfiniteScrollerDirective
+    InfiniteScrollerDirective,
+    MessageAreaComponent,
+    InputAreaComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

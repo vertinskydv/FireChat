@@ -13,10 +13,18 @@ import { DataLoadingService } from 'app/services/data-loading.service';
 export class AppComponent implements OnInit {
   user: Observable<firebase.User>;
   userData: any;
-  chatData: any;
+  messageDataObj: any;
+  messagesDataArray: any = [];
   dialedMessage: string = '';
-  currentChatName: string = 'chat1';
   numberMessages: number = 30;
+
+  newLastMessageId: any;
+  currentChatInfo = {
+    'name': 'chat1',
+    'lastMessageId': '',
+    'firstMessageId': '',
+  };
+
 
 
   @ViewChild('messageBox')
@@ -41,14 +49,70 @@ export class AppComponent implements OnInit {
   }
 
   sendMessage(message: string) {
-    this.dataLoadingService.sendMessage(message, this.currentChatName, this.userData.uid);
+    let messageData = {
+      'message': message,
+      'userId': this.userData.uid,
+      'time': Date.now()
+    };
+    this.dataLoadingService.sendMessage(messageData, this.currentChatInfo);
     this.dialedMessage = '';
   }
 
 
+   objectToArray(obj) {
+    let result = [];
+    for (let key in obj) {
+      result.push(obj[key]);
+    }
+    return result;
+  }
+
+  recalculateMessagesKeys(dataObj: any) {
+    // debugger;
+    let keys  = Object.keys(dataObj);
+
+    this.currentChatInfo.lastMessageId = keys[keys.length - 1];
+    this.currentChatInfo.firstMessageId = keys[0];
+    console.log(this.currentChatInfo.lastMessageId);
+    console.log(this.currentChatInfo.firstMessageId);
+  };
+
+  getInitialMessagesData() {
+    this.dataLoadingService.getInitialMessagesData(this.currentChatInfo, this.numberMessages).then(
+      data => {
+        // debugger;
+        this.messageDataObj = data.val();
+        this.messagesDataArray = this.objectToArray(data.val());
+        this.recalculateMessagesKeys(data.val());
+      }
+    );
+  }
+
+  recalculateCurrentChatInfo() {
+
+  }
+
+
+  onGetNewMessageId(newId: any) {
+    this.newLastMessageId = newId;
+    // debugger;
+
+    console.log(this.newLastMessageId);
+  }
+
+  listenLastMessageId() {
+    this.dataLoadingService.listenLastMessageId(this.currentChatInfo).then(
+      data => {
+        this.onGetNewMessageId(data);
+      }
+    );
+  }
+
+
   ngOnInit() {
-    this.user = this.afAuth.authState;
-    this.getUserData();
-    this.chatData = this.dataLoadingService.listenChatData(this.currentChatName, this.numberMessages);
+    // this.user = this.afAuth.authState;
+    // this.getUserData();
+    // this.listenLastMessageId();
+    this.getInitialMessagesData();
   }
 }

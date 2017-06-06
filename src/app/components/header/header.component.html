@@ -1,0 +1,4 @@
+<header class="header">
+  <button md-raised-button class="header__btn" color="primary" (click)="logout()" *ngIf="(user | async)?.uid">Logout</button>
+  <button md-raised-button class="header__btn" color="primary" (click)="login()" *ngIf="!(user | async)?.uid">Login with Facebook</button>
+</header>

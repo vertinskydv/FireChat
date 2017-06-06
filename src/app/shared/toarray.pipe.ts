@@ -4,7 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'toArray'
 })
 export class ToArrayPipe implements PipeTransform {
-  transform(value: any, args?: any): any {
+  transform(value?: any, args?: any): any {
+    debugger;
     if (value) {
       let result = [];
       for (let key in value) {
