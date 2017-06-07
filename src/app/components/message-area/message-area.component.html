@@ -1,3 +1,11 @@
-<p>
-  message-area works!
-</p>
+<div #messageBox
+     id="messages"
+     class="message-box"
+     >
+  <div class="message-wrap clearfix"
+       *ngFor="let messageData of messagesDataArray; trackBy: messageData?.time; let lastMsg = last"
+       scrollToBottom
+       [ready]="lastMsg">
+    <p class="message_out">{{messageData.message}}</p>
+  </div>
+</div>

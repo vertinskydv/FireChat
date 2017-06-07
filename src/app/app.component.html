@@ -1,26 +1,7 @@
-<app-header></app-header>
+<app-header (onLoginStatusChange) = "loginStatusChange($event)"></app-header>
 
 <main *ngIf="(user | async)?.uid">
-    <div #messageBox
-         id="messages"
-         class="message-box"
-         [firstMessage] = "currentChatInfo.firstMessageId"
-         infiniteScroller>
+  <app-message-area></app-message-area>
 
-
-      <div class="message-wrap clearfix"
-           *ngFor="let messageData of messagesDataArray; trackBy: messageData?.time; let lastMsg = last"
-           scrollToBottom
-           [ready]="lastMsg">
-        <p class="message_out">{{messageData.message}}</p>
-      </div>
-    </div>
-
-    <section class="send-box">
-      <md-input-container color="primary" class="send__input">
-        <textarea mdInput maxRows='25' [(ngModel)]="dialedMessage" mdTextareaAutosize placeholder="Enter your message"></textarea>
-      </md-input-container>
-      <button md-raised-button color="primary" (click)="sendMessage(dialedMessage)"  class="send__btn">SEND</button>
-
-    </section>
-  </main>
+  <app-input-area></app-input-area>
+</main>

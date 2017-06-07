@@ -9,7 +9,6 @@ import { environment } from '../environments/environment';
 import 'hammerjs';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material.module';
-import { ToArrayPipe } from './shared/toarray.pipe';
 
 import { AppComponent } from './app.component';
 import { ScrollToBottomDirective } from './directives/scroll-to-bottom.directive';
@@ -21,7 +20,6 @@ import { HeaderComponent } from './components/header/header.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ToArrayPipe,
     ScrollToBottomDirective,
     InfiniteScrollerDirective,
     MessageAreaComponent,

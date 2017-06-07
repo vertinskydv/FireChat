@@ -1,0 +1,21 @@
+@import "../../../scss/palette";
+
+.send-box {
+  font-size: 0;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.send {
+  &__input {
+    font-size: 14px;
+    width: 80%;
+    display: inline-block;
+  }
+
+  &__btn {
+    display: inline-block;
+    width: 20%;
+    padding: 0;
+  }
+}
