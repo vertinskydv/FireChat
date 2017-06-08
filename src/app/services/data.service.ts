@@ -29,7 +29,7 @@ export class DataService {
     this.userData = userdata;
   }
 
-  formatMessagesToArray(obj: any) {
+  formatInitialMessagesToArray(obj: any) {
     let result = [];
     for (let key in obj) {
       result.push(obj[key]);
@@ -37,34 +37,54 @@ export class DataService {
     return result;
   }
 
+  formatNewMessagesToArray(obj: any) {
+    let count = 0;
+    let result = [];
+    for (let key in obj) {
+      if (count !== 0) {
+        this.messageDataObj[key] = obj[key];
+        this.messagesDataArray.push(obj[key]);
+        result.push(obj[key]);
+      }
+      count++;
+    }
+    return result;
+  }
+
   getInitialMessagesData() {
-    return new Promise((resolve, reject) => {
-      firebase.database().ref('/chats/' + this.currentChatInfo.name + '/messages').limitToLast(this.numberMessages).once('value')
-        .then(data => {
-          this.messageDataObj = data.val();
-          this.messagesDataArray = this.formatMessagesToArray(this.messageDataObj);
-          this.getMessagesKeys();
-          resolve(this.messagesDataArray);
-        });
+    let self = this;
+    return Observable.create((observer) => {
+      firebase.database().ref('/chats/' + this.currentChatInfo.name + '/messages').limitToLast(this.numberMessages).on('value', obsCallback);
+      function obsCallback (snapshot) {
+        self.messageDataObj = snapshot.val();
+        if (self.messageDataObj) {
+          self.messagesDataArray = self.formatInitialMessagesToArray(self.messageDataObj);
+          firebase.database().ref('/chats/' + self.currentChatInfo.name + '/messages').limitToLast(self.numberMessages).off('value', obsCallback);
+          self.getMessagesKeys();
+          observer.next(self.messagesDataArray);
+        }
+      }
     });
+
   }
 
   getMessagesKeys() {
     let keys  = Object.keys(this.messageDataObj);
     this.currentChatInfo.firstMessageId = keys[0];
-    this.currentChatInfo.lastMessageId = keys[this.messagesDataArray.length - 1];
+    this.currentChatInfo.lastMessageId = keys[keys.length - 1];
   }
 
 
   listenLastMessages() {
+    let self  = this;
     return Observable.create((observer) => {
-      firebase.database().ref('/chats/chat1/messages').orderByKey().startAt(this.currentChatInfo.lastMessageId).on("value", function (snapshot) {
+      firebase.database().ref('/chats/chat1/messages').orderByKey().startAt(self.currentChatInfo.lastMessageId).on("value", function (snapshot) {
         let newMessagesObj = snapshot.val();
-        let newMessagesArr = this.formatMessagesToArray(snapshot.val());
-        this.messageDataObj.assign(newMessagesObj);
-        this.messagesDataArr.push()
-
-        observer.next(this.messagesDataArr);
+        if (newMessagesObj) {
+          let newMessagesArr = self.formatNewMessagesToArray(newMessagesObj);
+          self.getMessagesKeys();
+          observer.next(newMessagesArr);
+        }
       });
     });
   }

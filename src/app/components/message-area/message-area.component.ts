@@ -13,16 +13,17 @@ export class MessageAreaComponent implements OnInit {
   constructor(private ds: DataService) { }
 
   getInitialMessages() {
-    this.ds.getInitialMessagesData().then(result => {
-        this.messagesDataArray = result;
-      this.listenNewMessages();
+    this.ds.getInitialMessagesData().subscribe(result => {
+      // debugger;
+      this.messagesDataArray = result;
+      this.listenLastMessages();
     });
   }
 
-  listenNewMessages() {
+  listenLastMessages() {
     this.ds.listenLastMessages().subscribe((data) => {
-      this.messagesDataArray = data;
-      console.log(data);
+      // debugger;
+      this.messagesDataArray.concat(data);
     });
   }
 

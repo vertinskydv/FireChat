@@ -7,13 +7,16 @@ export class ScrollToBottomDirective {
   element: ElementRef;
   constructor(el: ElementRef) {
     this.element = el;
+
   }
 
   @Input()
   set ready(isReady: boolean) {
     let scrollableElement = this.element.nativeElement.parentElement;
     if (isReady) {
-      setTimeout(()=>{scrollableElement.scrollTop = scrollableElement.scrollHeight;}, 1)
+      setTimeout(() => {
+        scrollableElement.scrollTop = scrollableElement.scrollHeight;
+        }, 0.0000000001);
     }
   }
 
