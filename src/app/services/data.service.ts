@@ -73,7 +73,6 @@ export class DataService {
     this.currentChatInfo.lastMessageId = keys[keys.length - 1];
   }
 
-
   listenLastMessages() {
     let self  = this;
     return Observable.create((observer) => {
@@ -102,7 +101,11 @@ export class DataService {
           firstConnection = false;
         }
       }
-      // console.log('obs');
     });
+  }
+
+  getUserChatInfo(uid) {
+    return firebase.database().ref('/userChats/' + uid).orderByKey().equalTo('chat1').once('value');
+
   }
 }

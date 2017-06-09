@@ -16,6 +16,7 @@ import { InfiniteScrollerDirective } from './directives/infinite-scroller.direct
 import { MessageAreaComponent } from './components/message-area/message-area.component';
 import { InputAreaComponent } from './components/input-area/input-area.component';
 import { HeaderComponent } from './components/header/header.component';
+import { ChatAreaComponent } from './components/chat-area/chat-area.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { HeaderComponent } from './components/header/header.component';
     InfiniteScrollerDirective,
     MessageAreaComponent,
     InputAreaComponent,
-    HeaderComponent
+    HeaderComponent,
+    ChatAreaComponent
   ],
   imports: [
     BrowserModule,

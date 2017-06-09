@@ -13,77 +13,35 @@ import { DataService } from 'app/services/data.service';
 export class AppComponent implements OnInit {
   user: Observable<firebase.User>;
   userData: any;
-  messageDataObj: any;
-  messagesDataArray: any = [];
-  numberMessages: number = 30;
+  userChats: any;
 
-  newLastMessageId: any;
-  currentChatInfo = {
-    'name': 'chat1',
-    'lastMessageId': '',
-    'firstMessageId': '',
-  };
 
   @ViewChild('messageBox')
   private messageBox: ElementRef;
 
   constructor(public afAuth: AngularFireAuth,
-              private dataLoadingService: DataService) { }
+              private ds: DataService) { }
 
   loginStatusChange(user: Observable<any>) {
+    let self = this;
     this.user = user;
+
     this.user.subscribe(data => {
       this.userData = data;
+      if (this.userData) {
+        self.getUserChatsInfo();
+      }
     });
   }
 
+  getUserChatsInfo() {
+    this.ds.getUserChatInfo(this.userData.uid).then((result) => {
+      if (!result.val()) {
 
-
-
-
-  // recalculateMessagesKeys(dataObj: any) {
-    // debugger;
-  //   let keys  = Object.keys(dataObj);
-  //
-  //   this.currentChatInfo.lastMessageId = keys[keys.length - 1];
-  //   this.currentChatInfo.firstMessageId = keys[0];
-  //   console.log(this.currentChatInfo.lastMessageId);
-  //   console.log(this.currentChatInfo.firstMessageId);
-  // };
-
-  // getInitialMessagesData() {
-  //   this.dataLoadingService.getInitialMessagesData(this.currentChatInfo, this.numberMessages).then(
-  //     data => {
-  //       // debugger;
-  //       this.messageDataObj = data.val();
-  //       this.messagesDataArray = this.objectToArray(data.val());
-  //       this.recalculateMessagesKeys(data.val());
-  //     }
-  //   );
-  // }
-
-
-
-
-  // onGetNewMessageId(newId: any) {
-  //   this.newLastMessageId = newId;
-    // debugger;
-
-    // console.log(this.newLastMessageId);
-  // }/
-
-  // listenLastMessageId() {
-  //   this.dataLoadingService.listenLastMessageId(this.currentChatInfo).then(
-  //     data => {
-  //       this.onGetNewMessageId(data);
-  //     }
-  //   );
-  // }
-
-
-  ngOnInit() {
-
-    // this.getInitialMessagesData();
+      }
+    });
 
   }
+
+  ngOnInit() {}
 }

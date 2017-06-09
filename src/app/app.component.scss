@@ -1,3 +1,18 @@
+main {
+  flex-direction: row;
+  font-size: 0;
+}
 
+app-chat-area {
+  font-size: 14px;
+  width: 30%;
+  display: inline-block;
+}
+
+.message-input-wrapper {
+  font-size: 14px;
+  width: 70%;
+  display: inline-block;
+}
 
 

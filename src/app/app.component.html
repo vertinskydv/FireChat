@@ -1,7 +1,10 @@
 <app-header (onLoginStatusChange) = "loginStatusChange($event)"></app-header>
 
 <main *ngIf="(user | async)?.uid">
-  <app-message-area></app-message-area>
+  <app-chat-area></app-chat-area>
+  <div class="message-input-wrapper">
+    <app-message-area></app-message-area>
+    <app-input-area></app-input-area>
+  </div>
 
-  <app-input-area></app-input-area>
 </main>
