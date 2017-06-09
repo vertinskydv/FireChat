@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { DataService } from '../../services/data.service';
 
@@ -11,6 +11,13 @@ export class MessageAreaComponent implements OnInit {
   messagesDataArray: any = [];
 
   constructor(private ds: DataService) { }
+
+  @HostListener("window:scroll", ['$event'])
+  onScroll(event: any) {
+    // console.log(event.srcElement.scrollTop);
+    // console.log(event.srcElement.scrollTop);
+    // console.log(event);
+  }
 
   getInitialMessages() {
     this.ds.getInitialMessagesData().subscribe(result => {

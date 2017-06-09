@@ -1,6 +1,7 @@
 <div #messageBox
      id="messages"
      class="message-box"
+     (scroll) = "onScroll($event)"
      >
   <div class="message-wrap clearfix"
        *ngFor="let messageData of messagesDataArray; trackBy: messageData?.time; let lastMsg = last"

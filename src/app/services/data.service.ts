@@ -65,7 +65,6 @@ export class DataService {
         }
       }
     });
-
   }
 
   getMessagesKeys() {
@@ -78,41 +77,32 @@ export class DataService {
   listenLastMessages() {
     let self  = this;
     return Observable.create((observer) => {
-      firebase.database().ref('/chats/chat1/messages').orderByKey().startAt(self.currentChatInfo.lastMessageId).on("value", function (snapshot) {
-        let newMessagesObj = snapshot.val();
-        if (newMessagesObj) {
-          let newMessagesArr = self.formatNewMessagesToArray(newMessagesObj);
-          self.getMessagesKeys();
-          observer.next(newMessagesArr);
+      let firstConnection: boolean = true;
+      createConnection();
+      function createConnection () {
+        firstConnection = true;
+        firebase.database().ref('/chats/chat1/messages').orderByKey().startAt(self.currentChatInfo.lastMessageId).on("value", obsCallback);
+      }
+
+      function removeConnection() {
+        firebase.database().ref('/chats/chat1/messages').orderByKey().startAt(self.currentChatInfo.lastMessageId).off("value", obsCallback);
+      }
+
+      function obsCallback(snapshot) {
+        if (!firstConnection) {
+          let newMessagesObj = snapshot.val();
+          if (newMessagesObj) {
+            let newMessagesArr = self.formatNewMessagesToArray(newMessagesObj);
+            observer.next(newMessagesArr);
+            removeConnection();
+            self.getMessagesKeys();
+            createConnection();
+          }
+        } else {
+          firstConnection = false;
         }
-      });
+      }
+      // console.log('obs');
     });
   }
-
-
-  // listenChatData(chatInfo) {
-  //   let messagesData: any = {},
-  //       database = firebase.database();
-  //
-  //
-  //   database.ref('/chats/' + chatInfo.name + '/lastMessageId').on('value', (snapshot) => {
-  //     chatInfo.lastMessageId = snapshot.val();
-  //     if (chatInfo.lastMessageId === -1) {
-  //       chatInfo.firstMessageId = -1;
-  //     } else if (chatInfo.lastMessageId - this.numberMessages + 1 <= 0) {
-  //       chatInfo.firstMessageId = 0;
-  //     } else {
-  //       chatInfo.firstMessageId = chatInfo.lastMessageId - this.numberMessages + 1;
-  //     }
-  //     // console.log(chatData.lastMessageId);
-  //   });
-  //
-  //   database.ref('/chats/' + chatInfo.name + '/messages').limitToLast(this.numberMessages).on('value', (snapshot) => {
-  //     messagesData = snapshot.val();
-  //     // console.log(chatData.messages);
-  //     console.log(messagesData);
-  //   });
-  //
-  //   return [messagesData, chatInfo];
-  // }
 }
