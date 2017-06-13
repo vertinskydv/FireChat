@@ -18,6 +18,10 @@ import { InputAreaComponent } from './components/input-area/input-area.component
 import { HeaderComponent } from './components/header/header.component';
 import { ChatAreaComponent } from './components/chat-area/chat-area.component';
 
+import { chatReducer } from './reducer/chat.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreModule } from '@ngrx/store';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +40,11 @@ import { ChatAreaComponent } from './components/chat-area/chat-area.component';
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    StoreModule.provideStore({ chatReducer: chatReducer }),
+    StoreDevtoolsModule.instrumentOnlyWithExtension({
+      maxAge: 5
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

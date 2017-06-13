@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
+import {provideStore, Store} from '@ngrx/store';
 import * as firebase from 'firebase/app';
 import { DataService } from 'app/services/data.service';
 
@@ -14,13 +15,12 @@ export class AppComponent implements OnInit {
   user: Observable<firebase.User>;
   userData: any;
   userChats: any;
-
-
   @ViewChild('messageBox')
   private messageBox: ElementRef;
 
   constructor(public afAuth: AngularFireAuth,
-              private ds: DataService) { }
+              private ds: DataService,
+              _store: Store<any>) { }
 
   loginStatusChange(user: Observable<any>) {
     let self = this;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-chat-area',
@@ -6,8 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat-area.component.scss']
 })
 export class ChatAreaComponent implements OnInit {
-
+  @Output() addNewChat = new EventEmitter();
   constructor() { }
+
+  newChat() {
+    this.addNewChat.emit();
+  }
+
 
   ngOnInit() {
   }
