@@ -1,10 +1,11 @@
 <app-header (onLoginStatusChange) = "loginStatusChange($event)"></app-header>
 
-<main *ngIf="(model | async).user?.uid">
-  <app-chat-area (addNewChat)="addNewChat()">
-
+<main>
+  <app-chat-area (addNewChat)="addNewChat()"
+                 *ngIf="(model | async).user?.uid">
   </app-chat-area>
-  <div class="message-input-section">
+  <div class="message-input-section"
+       *ngIf="(model | async)?.currentChatId">
     <app-message-area></app-message-area>
     <app-input-area></app-input-area>
   </div>

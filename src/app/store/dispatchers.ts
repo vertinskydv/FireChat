@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { ADD_NEW_CHAT, CHANGE_LOGIN_STATUS } from './actions';
+import { ADD_NEW_CHAT, CHANGE_LOGIN_STATUS, UPDATE_CHAT_LIST } from './actions';
 
 export const chatState = function (state: any = {}, action: Action) {
   switch (action.type) {
@@ -9,7 +9,10 @@ export const chatState = function (state: any = {}, action: Action) {
     case CHANGE_LOGIN_STATUS:
       return Object.assign({}, state, {'user': action.payload});
 
+    case UPDATE_CHAT_LIST:
+      return Object.assign({}, state, {'chatList': action.payload});
+
     default:
       return state;
   }
-}
+};

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
-import {observable} from 'rxjs/symbol/observable';
+import { Store } from '@ngrx/store';
+import { AppStore } from '../shared/app-store';
 
 @Injectable()
 export class DataService {
@@ -15,7 +16,9 @@ export class DataService {
     'firstMessageId': '',
   };
 
-  constructor() { }
+  constructor(private store: Store<AppStore>) {
+
+  }
 
   sendMessage(message: any) {
     let messageData = {
@@ -23,8 +26,7 @@ export class DataService {
       'userId': this.userData.uid,
       'time': Date.now()
     };
-    let messageID = firebase.database().ref('chats/' + this.currentChatInfo.name + '/messages').push(messageData);
-    console.log(messageID);
+    firebase.database().ref('chats/' + this.currentChatInfo.name + '/messages').push(messageData);
   }
 
   getUserChatList(uid: String) {
@@ -35,8 +37,9 @@ export class DataService {
     });
   }
 
-  listenUserData (userdata) {
-    this.userData = userdata;
+  createNewChat() {
+    this.store.subscribe(data => console.log(data));
+    // firebase.database().ref('chats/' + this.currentChatInfo.name + '/messages').push(messageData);
   }
 
   formatInitialMessagesToArray(obj: any) {
