@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
+import {observable} from 'rxjs/symbol/observable';
 
 @Injectable()
 export class DataService {
@@ -22,7 +23,16 @@ export class DataService {
       'userId': this.userData.uid,
       'time': Date.now()
     };
-    firebase.database().ref('chats/' + this.currentChatInfo.name + '/messages').push(messageData);
+    let messageID = firebase.database().ref('chats/' + this.currentChatInfo.name + '/messages').push(messageData);
+    console.log(messageID);
+  }
+
+  getUserChatList(uid: String) {
+    return Observable.create((observer) => {
+      firebase.database().ref('/users/' + uid + '/chats').on('value', (snapshot) => {
+        observer.next(snapshot.val());
+      });
+    });
   }
 
   listenUserData (userdata) {
@@ -106,6 +116,5 @@ export class DataService {
 
   getUserChatInfo(uid) {
     return firebase.database().ref('/userChats/' + uid).orderByKey().equalTo('chat1').once('value');
-
   }
 }

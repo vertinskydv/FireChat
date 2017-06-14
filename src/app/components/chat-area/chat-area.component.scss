@@ -1,0 +1,27 @@
+.chat-area {
+  width: 100%;
+
+  &-item {
+    height: 80px;
+    border: 1px solid forestgreen;
+    background-color: #cccccc;
+  }
+
+  &-btn {
+    position: absolute;
+    bottom: 0;
+    right: 20px;
+  }
+}
+
+.chat-section {
+  position: relative;
+  margin-top: 20px;
+  font-size: 14px;
+  width: 30%;
+  float: left;
+  min-height: 500px;
+}
+
+
+

@@ -18,7 +18,7 @@ import { InputAreaComponent } from './components/input-area/input-area.component
 import { HeaderComponent } from './components/header/header.component';
 import { ChatAreaComponent } from './components/chat-area/chat-area.component';
 
-import { chatState } from './store/chatState';
+import { chatState } from './store/dispatchers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 
@@ -41,7 +41,7 @@ import { StoreModule } from '@ngrx/store';
     AngularFireAuthModule,
     BrowserAnimationsModule,
     MaterialModule,
-    StoreModule.provideStore({ chatReducer: chatState }),
+    StoreModule.provideStore({ chatState: chatState }),
     StoreDevtoolsModule.instrumentOnlyWithExtension({
       maxAge: 5
     })

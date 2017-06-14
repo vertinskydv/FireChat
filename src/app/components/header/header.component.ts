@@ -31,18 +31,7 @@ export class HeaderComponent implements OnInit {
 
   translateLoginStatus() {
     this.onLoginStatusChange.emit(this.user);
-    this.user.subscribe((data) => {
-      this.ds.listenUserData(data);
-    });
   }
-
-
-
-  // getUserData () {
-  //   this.user.subscribe(data => {
-  //     // this.userData = data;
-  //   });
-  // }
 
   ngOnInit() {
     this.user = this.afAuth.authState;
