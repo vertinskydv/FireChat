@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DataService } from 'app/services/data.service';
-import {log} from 'util';
+import { AppStore } from '../../shared/app-store';
 
 @Component({
   selector: 'app-chat-area',
@@ -8,7 +8,10 @@ import {log} from 'util';
   styleUrls: ['./chat-area.component.scss']
 })
 export class ChatAreaComponent implements OnInit {
-  constructor(private ds: DataService) { }
+  constructor(private ds: DataService) {
+
+
+  }
 
   createNewChat() {
     this.ds.createNewChat();

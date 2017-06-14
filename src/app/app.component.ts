@@ -17,8 +17,6 @@ import { AppStore } from './shared/app-store';
 export class AppComponent implements OnInit {
   public model;
 
-  userData: any;
-
   constructor(public afAuth: AngularFireAuth,
               private ds: DataService,
               private _store: Store<AppStore>) {

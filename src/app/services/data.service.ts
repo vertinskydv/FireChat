@@ -16,7 +16,13 @@ export class DataService {
     'firstMessageId': '',
   };
 
-  constructor(private store: Store<AppStore>) {
+  public model;
+
+  constructor(private _store: Store<AppStore>) {
+    _store.select('chatState').subscribe( date => {
+        this.model = date;
+      }
+    );
 
   }
 
@@ -38,8 +44,8 @@ export class DataService {
   }
 
   createNewChat() {
-    this.store.subscribe(data => console.log(data));
-    // firebase.database().ref('chats/' + this.currentChatInfo.name + '/messages').push(messageData);
+    console.log(this.model);
+    firebase.database().ref('chats').push({'users': this.model.user.uid});
   }
 
   formatInitialMessagesToArray(obj: any) {
