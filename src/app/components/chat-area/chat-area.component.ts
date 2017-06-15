@@ -13,12 +13,14 @@ export class ChatAreaComponent implements OnInit {
   public model$;
   private chatList$;
   private chatListArray$;
+  private currentChatID$;
 
   constructor(private _store: Store<AppStore>,
               private ds: DataService) {
     this.model$ = _store.select('chatState');
     this.chatList$ = this.model$.select('chatList');
     this.chatListArray$ = this.model$.select('chatListArray');
+    this.currentChatID$ = this.model$.select('currentChatID');
   }
 
   listenChatList() {
@@ -42,8 +44,7 @@ export class ChatAreaComponent implements OnInit {
     this._store.dispatch({type: SELECT_CURRENT_CHAT, payload: newChatID});
   }
 
-  selectCurrentChat(chaiID: String) {
-    console.log(chaiID);
+  selectCurrentChat(event, chaiID: String) {
     this._store.dispatch({type: SELECT_CURRENT_CHAT, payload: chaiID});
   }
 

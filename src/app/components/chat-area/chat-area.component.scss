@@ -1,10 +1,14 @@
 .chat-area {
-  width: 100%;
 
   &-item {
     height: 80px;
     border: 1px solid forestgreen;
     background-color: #cccccc;
+
+    &.active {
+      background-color: #212121;
+      color: #fff;
+    }
   }
 
   &-btn {
@@ -15,13 +19,18 @@
   }
 }
 
-.chat-section {
+.chat-area {
   position: relative;
   margin-top: 20px;
   font-size: 14px;
   width: 30%;
   float: left;
-  min-height: 500px;
+}
+
+.chat-box {
+  overflow-y: auto;
+  min-height: 600px;
+  max-height: 600px;
 }
 
 

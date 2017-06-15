@@ -1,9 +1,13 @@
-<section class="chat-section">
-  <div *ngFor="let chatItem of chatListArray$ | async"
-       class="chat-area-item"
-       (click)="selectCurrentChat(chatItem)">
-    {{chatItem}}
+<section class="chat-area">
+  <div class="chat-box">
+    <div *ngFor="let chatItem of chatListArray$ | async"
+         class="chat-area-item"
+         [class.active]="chatItem === (model$ | async)?.currentChatID"
+         (click)="selectCurrentChat($event, chatItem)">
+      {{chatItem}}
+    </div>
   </div>
+
   <button class="chat-area-btn"
           md-mini-fab
           color="primary"
