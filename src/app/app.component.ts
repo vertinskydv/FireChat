@@ -15,31 +15,31 @@ import { AppStore } from './shared/app-store';
   providers: [DataService]
 })
 export class AppComponent implements OnInit {
-  public model;
+  public model$;
+  public chatList$;
 
   constructor(public afAuth: AngularFireAuth,
               private ds: DataService,
               private _store: Store<AppStore>) {
-    this.model = _store.select('chatState');
+    this.model$ = _store.select('chatState');
   }
 
-  loginStatusChange(user: Observable<any>) {
-    let self = this;
-    user.subscribe(data => {
-      self._store.dispatch({type: CHANGE_LOGIN_STATUS, payload: data});
-      if (data.uid) {
-        self.listenChatList(data.uid);
-      }
-    });
-  }
+  // loginStatusChange(user: Observable<any>) {
+  //   let self = this;
+  //   user.subscribe(data => {
+  //     self._store.dispatch({type: CHANGE_LOGIN_STATUS, payload: data});
+  //     if (data.uid) {
+  //       self.listenChatList(data.uid);
+  //     }
+  //   });
+  // }
 
-  listenChatList(uid: String) {
-    this.ds.getUserChatList(uid).subscribe((chatListObj) => {
-      this._store.dispatch({type: UPDATE_CHAT_LIST, payload: chatListObj});
-    });
-  }
+  // listenChatList(uid: String) {
+  //   this.ds.getUserChatList(uid).subscribe((chatListObj) => {
+  //     this._store.dispatch({type: UPDATE_CHAT_LIST, payload: chatListObj});
+  //   });
+  // }
 
   ngOnInit() {
-
   }
 }

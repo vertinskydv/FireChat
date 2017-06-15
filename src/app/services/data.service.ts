@@ -17,13 +17,13 @@ export class DataService {
   };
 
   public model;
+  public storeData;
 
   constructor(private _store: Store<AppStore>) {
     _store.select('chatState').subscribe( date => {
         this.model = date;
       }
     );
-
   }
 
   sendMessage(message: any) {
@@ -44,8 +44,10 @@ export class DataService {
   }
 
   createNewChat() {
-    console.log(this.model);
-    firebase.database().ref('chats').push({'users': this.model.user.uid});
+    let newChatID = firebase.database().ref('chats').push({'users': this.model.user.uid}).key;
+    console.log(newChatID);
+    firebase.database().ref('users/' + this.model.user.uid + '/chats/').update({[newChatID]: newChatID});
+    return newChatID;
   }
 
   formatInitialMessagesToArray(obj: any) {
