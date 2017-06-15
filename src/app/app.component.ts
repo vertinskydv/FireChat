@@ -4,9 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Store } from '@ngrx/store';
 import * as firebase from 'firebase/app';
 import { DataService } from 'app/services/data.service';
-import { ADD_NEW_CHAT, CHANGE_LOGIN_STATUS, UPDATE_CHAT_LIST } from './store/actions';
 import { AppStore } from './shared/app-store';
-
 
 @Component({
   selector: 'app-root',
@@ -16,12 +14,29 @@ import { AppStore } from './shared/app-store';
 })
 export class AppComponent implements OnInit {
   public model$;
-  public chatList$;
+  public chatListArray$;
 
   constructor(public afAuth: AngularFireAuth,
               private ds: DataService,
               private _store: Store<AppStore>) {
     this.model$ = _store.select('chatState');
+    this.chatListArray$ = this.model$.select('chatListArray');
+    this.chatListArray$.subscribe(this.getInitialMessages);
+  }
+
+  getInitialMessages(arrayList) {
+    // this.ds.getInitialMessagesData().subscribe(result => {
+      // debugger;
+      console.log(arrayList);
+      // this.listenLastMessages();
+    // });
+  }
+
+  listenLastMessages() {
+    this.ds.listenLastMessages().subscribe((data) => {
+      // debugger;
+      // this.messagesDataArray.concat(data);
+    });
   }
 
   // loginStatusChange(user: Observable<any>) {
