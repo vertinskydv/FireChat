@@ -1,5 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import * as firebase from 'firebase/app';
+import { Store } from '@ngrx/store';
+import { AppStore } from '../../shared/app-store';
 import { DataService } from '../../services/data.service';
 
 @Component({
@@ -8,9 +9,12 @@ import { DataService } from '../../services/data.service';
   styleUrls: ['./message-area.component.scss']
 })
 export class MessageAreaComponent implements OnInit {
-  messagesDataArray: any = [];
+  public model$;
 
-  constructor(private ds: DataService) { }
+  constructor(private ds: DataService,
+              private _store: Store<AppStore>) {
+    this.model$ = _store.select('chatState');
+  }
 
   @HostListener("window:scroll", ['$event'])
   onScroll(event: any) {
@@ -19,23 +23,23 @@ export class MessageAreaComponent implements OnInit {
     // console.log(event);
   }
 
-  getInitialMessages() {
-    this.ds.getInitialMessagesData().subscribe(result => {
-      // debugger;
-      this.messagesDataArray = result;
-      this.listenLastMessages();
-    });
-  }
-
-  listenLastMessages() {
-    this.ds.listenLastMessages().subscribe((data) => {
-      // debugger;
-      this.messagesDataArray.concat(data);
-    });
-  }
+  // getInitialMessages() {
+  //   this.ds.getInitialMessagesData().subscribe(result => {
+  //     // debugger;
+  //     this.messagesDataArray = result;
+  //     this.listenLastMessages();
+  //   });
+  // }
+  //
+  // listenLastMessages() {
+  //   this.ds.listenLastMessages().subscribe((data) => {
+  //     // debugger;
+  //     this.messagesDataArray.concat(data);
+  //   });
+  // }
 
   ngOnInit() {
-    this.getInitialMessages();
+    // this.getInitialMessages();
   }
 
 }

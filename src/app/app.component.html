@@ -5,7 +5,7 @@
                  *ngIf="(model$ | async).user?.uid">
   </app-chat-area>
   <div class="message-input-section"
-       *ngIf="(model$ | async)?.currentChatId">
+       *ngIf="(model$ | async)?.currentChatID">
     <app-message-area></app-message-area>
     <app-input-area></app-input-area>
   </div>
