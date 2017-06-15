@@ -16,12 +16,13 @@ export class DataService {
     'firstMessageId': '',
   };
 
-  public model;
+  public model$;
   public storeData;
 
   constructor(private _store: Store<AppStore>) {
-    _store.select('chatState').subscribe( date => {
-        this.model = date;
+    this.model$ = _store.select('chatState');
+    this.model$.subscribe( date => {
+        this.storeData = date;
       }
     );
   }
@@ -35,18 +36,18 @@ export class DataService {
     firebase.database().ref('chats/' + this.currentChatInfo.name + '/messages').push(messageData);
   }
 
-  getUserChatList(uid: String) {
+  listenChatList() {
     return Observable.create((observer) => {
-      firebase.database().ref('/users/' + uid + '/chats').on('value', (snapshot) => {
+      firebase.database().ref('/users/' + this.storeData.user.uid + '/chats').on('value', (snapshot) => {
         observer.next(snapshot.val());
       });
     });
   }
 
   createNewChat() {
-    let newChatID = firebase.database().ref('chats').push({'users': this.model.user.uid}).key;
+    let newChatID = firebase.database().ref('chats').push({'users': this.storeData.user.uid}).key;
     console.log(newChatID);
-    firebase.database().ref('users/' + this.model.user.uid + '/chats/').update({[newChatID]: newChatID});
+    firebase.database().ref('users/' + this.storeData.user.uid + '/chats/').update({[newChatID]: newChatID});
     return newChatID;
   }
 

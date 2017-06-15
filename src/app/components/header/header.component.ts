@@ -6,6 +6,7 @@ import * as firebase from 'firebase/app';
 import { DataService } from '../../services/data.service';
 import { Store } from '@ngrx/store';
 import { AppStore } from '../../shared/app-store';
+import { CHANGE_LOGIN_STATUS } from '../../store/actions';
 
 @Component({
   selector: 'app-header',
@@ -15,8 +16,6 @@ import { AppStore } from '../../shared/app-store';
 export class HeaderComponent implements OnInit {
   user: Observable<firebase.User>;
   private model$;
-
-  @Output() onLoginStatusChange = new EventEmitter<any>();
 
   constructor(public afAuth: AngularFireAuth,
               private ds: DataService,
@@ -29,11 +28,12 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.afAuth.auth.signOut();
-    this.translateLoginStatus();
   }
 
   translateLoginStatus() {
-    this.onLoginStatusChange.emit(this.user);
+    this.user.subscribe((data) => {
+      this._store.dispatch({type: CHANGE_LOGIN_STATUS, payload: data})
+    });
   }
 
   ngOnInit() {

@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { ADD_NEW_CHAT, CHANGE_LOGIN_STATUS, UPDATE_CHAT_LIST, SELECT_CURRENT_CHAT } from './actions';
+import { ADD_NEW_CHAT, CHANGE_LOGIN_STATUS, UPDATE_CHAT_LIST, SELECT_CURRENT_CHAT, REFRESH_CHAT_LIST, REFRESH_CHAT_LIST_ARRAY } from './actions';
 
 export function chatState (state: any = {}, action: Action) {
   switch (action.type) {
@@ -14,6 +14,12 @@ export function chatState (state: any = {}, action: Action) {
 
     case SELECT_CURRENT_CHAT:
       return Object.assign({}, state, {'currentChatID': action.payload});
+
+    case REFRESH_CHAT_LIST:
+      return Object.assign({}, state, {'chatList': action.payload});
+
+    case REFRESH_CHAT_LIST_ARRAY:
+      return Object.assign({}, state, {'chatListArray': action.payload});
 
     default:
       return state;

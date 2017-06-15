@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DataService } from 'app/services/data.service';
-import { SELECT_CURRENT_CHAT } from '../../store/actions';
+import { SELECT_CURRENT_CHAT, REFRESH_CHAT_LIST, REFRESH_CHAT_LIST_ARRAY } from '../../store/actions';
 import { Store } from '@ngrx/store';
 import { AppStore } from '../../shared/app-store';
 
@@ -12,18 +12,29 @@ import { AppStore } from '../../shared/app-store';
 export class ChatAreaComponent implements OnInit {
   public model$;
   private chatList$;
-  private storeData;
+  private chatListArray$;
 
   constructor(private _store: Store<AppStore>,
               private ds: DataService) {
     this.model$ = _store.select('chatState');
     this.chatList$ = this.model$.select('chatList');
-    // this.model$.subscribe( date => {
-    //     this.storeData = date;
-    //   }
-    // );
-    // this.chatList$.subscribe(this.onChangeChatList());
+    this.chatListArray$ = this.model$.select('chatListArray');
+  }
 
+  listenChatList() {
+    this.ds.listenChatList().subscribe(data => {
+      this._store.dispatch({type: REFRESH_CHAT_LIST, payload: data});
+
+      this.formatChatItem(data);
+    });
+  }
+
+  formatChatItem(data) {
+    let chatItemList: Array<any> = [];
+    for (let key in data) {
+      chatItemList.push(data[key]);
+    }
+    this._store.dispatch({type: REFRESH_CHAT_LIST_ARRAY, payload: chatItemList});
   }
 
   createNewChat() {
@@ -31,17 +42,13 @@ export class ChatAreaComponent implements OnInit {
     this._store.dispatch({type: SELECT_CURRENT_CHAT, payload: newChatID});
   }
 
-  listenChatList() {
-    this.ds.listenChatList().subscribe(data => {
-      this._store.dispatch({type: CHANGE_LOGIN_STATUS, payload: data});
-    });
+  selectCurrentChat(chaiID: String) {
+    console.log(chaiID);
+    this._store.dispatch({type: SELECT_CURRENT_CHAT, payload: chaiID});
   }
 
-  // onChangeChatList() {
-  //
-  // }
-
   ngOnInit() {
+    this.listenChatList();
   }
 
 }
