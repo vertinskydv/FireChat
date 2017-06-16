@@ -16,12 +16,13 @@ export function chatState (state: any = {}, action: Action) {
       return Object.assign({}, state, {'currentChatID': action.payload});
 
     case REFRESH_CHAT_LIST:
-      return Object.assign({}, state, {'chatList': action.payload});
-
-    case REFRESH_CHAT_LIST_ARRAY:
-      return Object.assign({}, state, {'chatListArray': action.payload});
+      let chatItemList: Array<any> = [];
+      for (let key in action.payload) {
+        chatItemList.push(action.payload[key]);
+      }
+      return Object.assign({}, state, {'chatList': action.payload, 'chatListArray': chatItemList});
 
     default:
       return state;
   }
-};
+}

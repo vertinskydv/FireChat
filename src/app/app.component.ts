@@ -21,15 +21,18 @@ export class AppComponent implements OnInit {
               private _store: Store<AppStore>) {
     this.model$ = _store.select('chatState');
     this.chatListArray$ = this.model$.select('chatListArray');
-    this.chatListArray$.subscribe(this.getInitialMessages);
+    this.chatListArray$.subscribe(this.getInitialMessages.bind(this));
   }
 
-  getInitialMessages(arrayList) {
-    // this.ds.getInitialMessagesData().subscribe(result => {
-      // debugger;
-      console.log(arrayList);
-      // this.listenLastMessages();
-    // });
+  getInitialMessages(chatList) {
+    if (chatList) {
+      chatList.forEach((chatKey) => {
+        this.ds.getInitialMessagesData(chatKey).subscribe(result => {
+          console.log(chatKey);
+        });
+      });
+    }
+
   }
 
   listenLastMessages() {

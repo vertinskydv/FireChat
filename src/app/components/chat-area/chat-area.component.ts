@@ -26,17 +26,7 @@ export class ChatAreaComponent implements OnInit {
   listenChatList() {
     this.ds.listenChatList().subscribe(data => {
       this._store.dispatch({type: REFRESH_CHAT_LIST, payload: data});
-
-      this.formatChatItem(data);
     });
-  }
-
-  formatChatItem(data) {
-    let chatItemList: Array<any> = [];
-    for (let key in data) {
-      chatItemList.push(data[key]);
-    }
-    this._store.dispatch({type: REFRESH_CHAT_LIST_ARRAY, payload: chatItemList});
   }
 
   createNewChat() {

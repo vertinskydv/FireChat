@@ -30,10 +30,10 @@ export class DataService {
   sendMessage(message: any) {
     let messageData = {
       'message': message,
-      'userId': this.userData.uid,
+      'userId': this.storeData.user.uid,
       'time': Date.now()
     };
-    firebase.database().ref('chats/' + this.currentChatInfo.name + '/messages').push(messageData);
+    firebase.database().ref('chats/' + this.storeData.currentChatID + '/messages').push(messageData);
   }
 
   listenChatList() {
@@ -73,15 +73,15 @@ export class DataService {
     return result;
   }
 
-  getInitialMessagesData() {
+  getInitialMessagesData(chatKey) {
     let self = this;
     return Observable.create((observer) => {
-      firebase.database().ref('/chats/' + this.currentChatInfo.name + '/messages').limitToLast(this.numberMessages).on('value', obsCallback);
+      firebase.database().ref('/chats/' + chatKey + '/messages').limitToLast(this.numberMessages).on('value', obsCallback);
       function obsCallback (snapshot) {
         self.messageDataObj = snapshot.val();
         if (self.messageDataObj) {
           self.messagesDataArray = self.formatInitialMessagesToArray(self.messageDataObj);
-          firebase.database().ref('/chats/' + self.currentChatInfo.name + '/messages').limitToLast(self.numberMessages).off('value', obsCallback);
+          firebase.database().ref('/chats/' + chatKey + '/messages').limitToLast(self.numberMessages).off('value', obsCallback);
           self.getMessagesKeys();
           observer.next(self.messagesDataArray);
         }
