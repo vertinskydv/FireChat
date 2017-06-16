@@ -1,6 +1,6 @@
 <section class="chat-area">
   <div class="chat-box">
-    <div *ngFor="let chatItem of chatListArray$ | async"
+    <div *ngFor="let chatItem of chatIDListArray$ | async"
          class="chat-area-item"
          [class.active]="chatItem === (model$ | async)?.currentChatID"
          (click)="selectCurrentChat($event, chatItem)">

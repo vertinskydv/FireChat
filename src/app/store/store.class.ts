@@ -1,13 +1,13 @@
 export class StoreClass {
-  public messages;
+  public chat;
   public user;
-  public chatList;
-  public chatListArray;
+  public chatIDList;
+  public chatIDListArray;
 
   constructor () {
-    this.messages = {};
+    this.chat = {};
     this.user = {};
-    this.chatList = {};
-    this.chatListArray = [];
+    this.chatIDList = {};
+    this.chatIDListArray = [];
   }
 }

@@ -1,4 +1,5 @@
 // Chat Action Constants
+export const CLEAR_STORE = 'CLEAR_STORE';
 export const ADD_NEW_CHAT = 'ADD_NEW_CHAT';
 export const CHANGE_LOGIN_STATUS = 'CHANGE_LOGIN_STATUS';
 export const UPDATE_CHAT_LIST = 'UPDATE_CHAT_LIST';

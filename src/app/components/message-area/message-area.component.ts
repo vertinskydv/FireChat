@@ -10,7 +10,6 @@ import { DataService } from '../../services/data.service';
 })
 export class MessageAreaComponent implements OnInit {
   public model$;
-  public chatList$;
   public currentChatID$;
   public storeData;
   public currentMessages$;
@@ -19,15 +18,13 @@ export class MessageAreaComponent implements OnInit {
               private _store: Store<AppStore>) {
     this.model$ = _store.select('chatState');
     this.currentChatID$ = this.model$.select('currentChatID');
-    // this.chatList$ = this.model$.select('chatList');
-    this.model$.subscribe( date => {
-        this.storeData = date;
+    this.model$.subscribe( data => {
+        this.storeData = data;
       }
     );
 
     this.currentChatID$.subscribe((ChatID) => {
-      this.currentMessages$ = this.model$.select('messages').select(ChatID);
-      console.log(ChatID);
+      this.currentMessages$ = this.model$.select('chat').select(ChatID).select('messages');
     });
   }
 

@@ -6,7 +6,7 @@ import * as firebase from 'firebase/app';
 import { DataService } from '../../services/data.service';
 import { Store } from '@ngrx/store';
 import { AppStore } from '../../shared/app-store';
-import { CHANGE_LOGIN_STATUS } from '../../store/actions';
+import { CHANGE_LOGIN_STATUS, IMPLEMENT_STORE, CLEAR_STORE } from '../../store/actions';
 
 @Component({
   selector: 'app-header',
@@ -32,7 +32,12 @@ export class HeaderComponent implements OnInit {
 
   translateLoginStatus() {
     this.user.subscribe((data) => {
-      this._store.dispatch({type: CHANGE_LOGIN_STATUS, payload: data})
+      if (data) {
+        this._store.dispatch({type: IMPLEMENT_STORE});
+        this._store.dispatch({type: CHANGE_LOGIN_STATUS, payload: data});
+      } else {
+        this._store.dispatch({type: CLEAR_STORE, payload: data});
+      }
     });
   }
 
