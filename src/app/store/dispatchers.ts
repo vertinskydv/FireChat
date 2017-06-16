@@ -1,5 +1,10 @@
 import { Action } from '@ngrx/store';
-import { ADD_NEW_CHAT, CHANGE_LOGIN_STATUS, UPDATE_CHAT_LIST, SELECT_CURRENT_CHAT, REFRESH_CHAT_LIST, REFRESH_CHAT_LIST_ARRAY } from './actions';
+import { ADD_NEW_CHAT,
+         CHANGE_LOGIN_STATUS,
+         UPDATE_CHAT_LIST,
+         SELECT_CURRENT_CHAT,
+         REFRESH_CHAT_LIST,
+         ADD_INITIAL_MESSAGES } from './actions';
 
 export function chatState (state: any = {}, action: Action) {
   switch (action.type) {
@@ -21,6 +26,17 @@ export function chatState (state: any = {}, action: Action) {
         chatItemList.push(action.payload[key]);
       }
       return Object.assign({}, state, {'chatList': action.payload, 'chatListArray': chatItemList});
+
+    case ADD_INITIAL_MESSAGES:
+      let newState = Object.assign({}, state);
+      if (newState.hasOwnProperty('messages')) {
+        newState.messages[action.payload.chatKey] = action.payload.messagesObj;
+      } else {
+        newState.messages = {};
+        newState.messages[action.payload.chatKey] =  action.payload.messagesObj;
+      }
+      return newState;
+
 
     default:
       return state;

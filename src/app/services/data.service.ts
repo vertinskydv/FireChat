@@ -79,10 +79,12 @@ export class DataService {
       firebase.database().ref('/chats/' + chatKey + '/messages').limitToLast(this.numberMessages).on('value', obsCallback);
       function obsCallback (snapshot) {
         self.messageDataObj = snapshot.val();
+        // debugger;
         if (self.messageDataObj) {
           self.messagesDataArray = self.formatInitialMessagesToArray(self.messageDataObj);
+          // debugger;
           firebase.database().ref('/chats/' + chatKey + '/messages').limitToLast(self.numberMessages).off('value', obsCallback);
-          self.getMessagesKeys();
+          // self.getMessagesKeys();
           observer.next(self.messagesDataArray);
         }
       }

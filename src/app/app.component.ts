@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Store } from '@ngrx/store';
 import * as firebase from 'firebase/app';
+import { ADD_INITIAL_MESSAGES } from './store/actions';
 import { DataService } from 'app/services/data.service';
 import { AppStore } from './shared/app-store';
 
@@ -28,7 +29,8 @@ export class AppComponent implements OnInit {
     if (chatList) {
       chatList.forEach((chatKey) => {
         this.ds.getInitialMessagesData(chatKey).subscribe(result => {
-          console.log(chatKey);
+          // debugger;
+          this._store.dispatch({type: ADD_INITIAL_MESSAGES, payload: { 'messagesObj': result, 'chatKey': chatKey}});
         });
       });
     }

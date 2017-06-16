@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DataService } from 'app/services/data.service';
-import { SELECT_CURRENT_CHAT, REFRESH_CHAT_LIST, REFRESH_CHAT_LIST_ARRAY } from '../../store/actions';
+import { SELECT_CURRENT_CHAT, REFRESH_CHAT_LIST } from '../../store/actions';
 import { Store } from '@ngrx/store';
 import { AppStore } from '../../shared/app-store';
 
@@ -25,6 +25,7 @@ export class ChatAreaComponent implements OnInit {
 
   listenChatList() {
     this.ds.listenChatList().subscribe(data => {
+      // debugger;
       this._store.dispatch({type: REFRESH_CHAT_LIST, payload: data});
     });
   }

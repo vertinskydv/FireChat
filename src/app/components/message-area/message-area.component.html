@@ -3,7 +3,7 @@
      class="message-box"
      (scroll) = "onScroll($event)">
   <div class="message-wrap clearfix"
-       *ngFor="let messageData of messagesDataArray; trackBy: messageData?.time; let lastMsg = last"
+       *ngFor="let messageData of (currentMessages$ | async); trackBy: messageData?.time; let lastMsg = last"
        scrollToBottom
        [ready]="lastMsg">
     <p class="message_out">{{messageData.message}}</p>
