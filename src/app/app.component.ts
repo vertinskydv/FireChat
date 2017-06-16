@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Store } from '@ngrx/store';
 import * as firebase from 'firebase/app';
-import { ADD_INITIAL_MESSAGES } from './store/actions';
+import { ADD_INITIAL_MESSAGES, IMPLEMENT_STORE } from './store/actions';
 import { DataService } from 'app/services/data.service';
 import { AppStore } from './shared/app-store';
 
@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
     this.model$ = _store.select('chatState');
     this.chatListArray$ = this.model$.select('chatListArray');
     this.chatListArray$.subscribe(this.getInitialMessages.bind(this));
+    _store.dispatch({type: IMPLEMENT_STORE});
   }
 
   getInitialMessages(chatList) {
@@ -60,6 +61,9 @@ export class AppComponent implements OnInit {
   //   });
   // }
 
+
+
   ngOnInit() {
+
   }
 }
