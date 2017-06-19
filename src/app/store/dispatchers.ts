@@ -9,7 +9,8 @@ import { IMPLEMENT_STORE,
          REFRESH_CHAT_LIST,
          ADD_INITIAL_MESSAGES,
          SET_INITIAL_CHATLIST_VALUE,
-         CHAT_LIST_ITEM_CHANGE
+         CHAT_LIST_ITEM_CHANGE,
+         CHAT_LIST_ITEM_ADD
           } from './actions';
 
 export function chatState (state: any = {}, action: Action) {
@@ -50,15 +51,24 @@ export function chatState (state: any = {}, action: Action) {
         }
         return false;
       });
-
       newState.chatDateIDList.unshift(action.payload);
-
       if (!coincidence) {
         newState.chatListQuantity ++;
       }
       return newState;
     }
 
+    case CHAT_LIST_ITEM_ADD: {
+      let newState = Object.assign({}, state);
+      if (!newState.hasOwnProperty('chatDateIDList')) {
+        newState.chatDateIDList = [];
+        newState.chatListQuantity = 0;
+      }
+      newState.chatDateIDList.unshift(action.payload);
+      newState.chatListQuantity ++;
+      return newState;
+
+    }
     case ADD_INITIAL_MESSAGES: {
       let newState = Object.assign({}, state);
       newState.chat[action.payload.chatKey] = {};

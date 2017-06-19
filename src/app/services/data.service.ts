@@ -53,7 +53,6 @@ export class DataService {
     });
   }
 
-
   listenChatListUpdate() {
     let self = this;
     return Observable.create((observer) => {
@@ -64,6 +63,17 @@ export class DataService {
       }
     });
   }
+
+  listenChatListNewChat() {
+    let self = this;
+    return Observable.create((observer) => {
+      firebase.database().ref('/users/' + self.storeData.user.uid + '/chats').orderByValue().limitToLast(20)
+        .on('child_added', obsCallback);
+      function obsCallback(snapshot) {
+        observer.next([snapshot.key, snapshot.val()]);
+      }
+    });
+  };
 
   createNewChat() {
     let newChatID = firebase.database().ref('chats').push({

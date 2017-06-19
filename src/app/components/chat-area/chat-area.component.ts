@@ -1,6 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DataService } from 'app/services/data.service';
-import { SELECT_CURRENT_CHAT, REFRESH_CHAT_LIST, SET_INITIAL_CHATLIST_VALUE, CHAT_LIST_ITEM_CHANGE } from '../../store/actions';
+import { SELECT_CURRENT_CHAT,
+         REFRESH_CHAT_LIST,
+         SET_INITIAL_CHATLIST_VALUE,
+         CHAT_LIST_ITEM_CHANGE,
+         CHAT_LIST_ITEM_ADD } from '../../store/actions';
 import { Store } from '@ngrx/store';
 import { AppStore } from '../../shared/app-store';
 
@@ -32,8 +36,11 @@ export class ChatAreaComponent implements OnInit {
   }
 
   listenChatListChanges() {
+    this.ds.listenChatListNewChat().subscribe(data => {
+      this._store.dispatch({type: CHAT_LIST_ITEM_ADD, payload: data});
+    });
+
     this.ds.listenChatListUpdate().subscribe(data => {
-      debugger;
       this._store.dispatch({type: CHAT_LIST_ITEM_CHANGE, payload: data});
     });
   }
@@ -60,7 +67,7 @@ export class ChatAreaComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getInitialChatList();
+    this.listenChatListChanges();
   }
 
 }

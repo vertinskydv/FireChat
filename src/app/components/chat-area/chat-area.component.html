@@ -5,7 +5,7 @@
          [class.active]="chatItem[0] === (model$ | async)?.currentChatID"
          (click)="selectCurrentChat($event, chatItem[0])">
       {{chatItem[0]}} |
-      {{chatItem[1] | date:'shortTime' }}
+      {{chatItem[1] | date:'HH:mm:ss' }}
     </div>
   </div>
 
