@@ -1,5 +1,5 @@
 <section class="chat-area">
-  <div class="chat-box">
+  <div class="chat-box" (scroll) = "onScroll($event)">
     <div *ngFor="let chatItem of chatDateIDList$ | async"
          class="chat-area-item"
          [class.active]="chatItem[0] === (model$ | async)?.currentChatID"

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { DataService } from 'app/services/data.service';
 import { SELECT_CURRENT_CHAT,
          REFRESH_CHAT_LIST,
@@ -19,12 +19,22 @@ export class ChatAreaComponent implements OnInit {
   private chatIDListArray$;
   private currentChatID$;
 
+
   constructor(private _store: Store<AppStore>,
               private ds: DataService) {
     this.model$ = _store.select('chatState');
     this.chatDateIDList$ = this.model$.select('chatDateIDList');
     this.chatIDListArray$ = this.model$.select('chatIDListArray');
     this.currentChatID$ = this.model$.select('currentChatID');
+  }
+
+  onScroll(event: any) {
+    if (event.target.scrollHeight === event.target.offsetHeight + event.target.scrollTop) {
+      console.log("bingo");
+    }
+    // console.log(event.srcElement.scrollTop);
+    // console.log(event.srcElement.scrollTop);
+    // console.log(event);
   }
 
   getInitialChatList() {
@@ -53,7 +63,6 @@ export class ChatAreaComponent implements OnInit {
   selectCurrentChat(event, chaiID: String) {
     this._store.dispatch({type: SELECT_CURRENT_CHAT, payload: chaiID});
   }
-
 
   sortChatListByTime(chatList) {
     let sortable = [];
