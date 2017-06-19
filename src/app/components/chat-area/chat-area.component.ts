@@ -34,9 +34,7 @@ export class ChatAreaComponent implements OnInit {
     if (event.target.scrollHeight === event.target.offsetHeight + event.target.scrollTop) {
       this.chatItemsLoading = true;
       this.ds.expandChatList().then(data => {
-        console.log(data.val());
         let sortableData = this.sortChatListByTime(data.val());
-        console.log(sortableData);
         this._store.dispatch({type: EXPAND_CHAT_LIST, payload: sortableData});
         this.chatItemsLoading = false;
       });
