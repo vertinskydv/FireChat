@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import {MdButtonModule, MdCheckboxModule, MdInputModule, MdIconModule} from '@angular/material';
+import {MdButtonModule, MdCheckboxModule, MdInputModule, MdIconModule, MdProgressBarModule } from '@angular/material';
 
 
 
@@ -9,13 +9,15 @@ import {MdButtonModule, MdCheckboxModule, MdInputModule, MdIconModule} from '@an
     MdButtonModule,
     MdCheckboxModule,
     MdInputModule,
-    MdIconModule
+    MdIconModule,
+    MdProgressBarModule
   ],
   exports: [
     MdButtonModule,
     MdCheckboxModule,
     MdInputModule,
-    MdIconModule
+    MdIconModule,
+    MdProgressBarModule
   ],
 })
 export class MaterialModule { }

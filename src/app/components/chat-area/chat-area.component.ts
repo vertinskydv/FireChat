@@ -4,7 +4,8 @@ import { SELECT_CURRENT_CHAT,
          REFRESH_CHAT_LIST,
          SET_INITIAL_CHATLIST_VALUE,
          CHAT_LIST_ITEM_CHANGE,
-         CHAT_LIST_ITEM_ADD } from '../../store/actions';
+         CHAT_LIST_ITEM_ADD,
+         EXPAND_CHAT_LIST} from '../../store/actions';
 import { Store } from '@ngrx/store';
 import { AppStore } from '../../shared/app-store';
 
@@ -18,6 +19,7 @@ export class ChatAreaComponent implements OnInit {
   private chatDateIDList$;
   private chatIDListArray$;
   private currentChatID$;
+  private chatItemsLoading:boolean = false;
 
 
   constructor(private _store: Store<AppStore>,
@@ -30,26 +32,21 @@ export class ChatAreaComponent implements OnInit {
 
   onScroll(event: any) {
     if (event.target.scrollHeight === event.target.offsetHeight + event.target.scrollTop) {
-      console.log("bingo");
+      this.chatItemsLoading = true;
+      this.ds.expandChatList().then(data => {
+        console.log(data.val());
+        let sortableData = this.sortChatListByTime(data.val());
+        console.log(sortableData);
+        this._store.dispatch({type: EXPAND_CHAT_LIST, payload: sortableData});
+        this.chatItemsLoading = false;
+      });
     }
-    // console.log(event.srcElement.scrollTop);
-    // console.log(event.srcElement.scrollTop);
-    // console.log(event);
-  }
-
-  getInitialChatList() {
-    this.ds.getInitialChatList().subscribe(data => {
-      let sortableData = this.sortChatListByTime(data);
-      this._store.dispatch({type: SET_INITIAL_CHATLIST_VALUE, payload: sortableData});
-      this.listenChatListChanges();
-    });
   }
 
   listenChatListChanges() {
     this.ds.listenChatListNewChat().subscribe(data => {
       this._store.dispatch({type: CHAT_LIST_ITEM_ADD, payload: data});
     });
-
     this.ds.listenChatListUpdate().subscribe(data => {
       this._store.dispatch({type: CHAT_LIST_ITEM_CHANGE, payload: data});
     });

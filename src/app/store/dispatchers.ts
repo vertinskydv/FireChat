@@ -10,7 +10,8 @@ import { IMPLEMENT_STORE,
          ADD_INITIAL_MESSAGES,
          SET_INITIAL_CHATLIST_VALUE,
          CHAT_LIST_ITEM_CHANGE,
-         CHAT_LIST_ITEM_ADD
+         CHAT_LIST_ITEM_ADD,
+         EXPAND_CHAT_LIST
           } from './actions';
 
 export function chatState (state: any = {}, action: Action) {
@@ -37,7 +38,6 @@ export function chatState (state: any = {}, action: Action) {
       let newState = Object.assign({}, state);
       newState.chatDateIDList = action.payload;
       newState.chatListQuantity = action.payload.length;
-
       return newState;
     }
 
@@ -67,8 +67,15 @@ export function chatState (state: any = {}, action: Action) {
       newState.chatDateIDList.unshift(action.payload);
       newState.chatListQuantity ++;
       return newState;
-
     }
+
+    case EXPAND_CHAT_LIST: {
+      let newState = Object.assign({}, state);
+      newState.chatDateIDList.push(...action.payload);
+      newState.chatListQuantity += action.payload.length;
+      return newState;
+    }
+
     case ADD_INITIAL_MESSAGES: {
       let newState = Object.assign({}, state);
       newState.chat[action.payload.chatKey] = {};

@@ -36,23 +36,6 @@ export class DataService {
     firebase.database().ref('chats/' + this.storeData.currentChatID + '/messages').push(messageData);
   }
 
-  getInitialChatList() {
-    let self = this;
-    return Observable.create((observer) => {
-      // debugger;
-      firebase.database().ref('/users/' + self.storeData.user.uid + '/chats')
-        .orderByValue().limitToLast(20).on('value', obsCallback);
-      function obsCallback (snapshot) {
-        let userTotalChatsList = snapshot.val();
-        if (userTotalChatsList) {
-          observer.next(userTotalChatsList);
-        }
-        firebase.database().ref('/users/' + self.storeData.user.uid + '/chats')
-          .orderByValue().limitToLast(20).off('value', obsCallback);
-      }
-    });
-  }
-
   listenChatListUpdate() {
     let self = this;
     return Observable.create((observer) => {
@@ -67,13 +50,20 @@ export class DataService {
   listenChatListNewChat() {
     let self = this;
     return Observable.create((observer) => {
-      firebase.database().ref('/users/' + self.storeData.user.uid + '/chats').orderByValue().limitToLast(20)
+      firebase.database().ref('/users/' + self.storeData.user.uid + '/chats').orderByValue().limitToLast(30)
         .on('child_added', obsCallback);
       function obsCallback(snapshot) {
         observer.next([snapshot.key, snapshot.val()]);
       }
     });
   };
+
+  expandChatList() {
+    let lastTime = this.storeData.chatDateIDList[this.storeData.chatDateIDList.length - 1][1];
+    return firebase.database().ref('/users/' + this.storeData.user.uid + '/chats').orderByValue()
+      .endAt(lastTime - 1)
+      .limitToLast(10).once('value');
+  }
 
   createNewChat() {
     let newChatID = firebase.database().ref('chats').push({

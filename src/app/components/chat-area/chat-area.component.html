@@ -15,5 +15,10 @@
           (click)="createNewChat()">
     <md-icon>add</md-icon>
   </button>
+  <md-progress-bar
+    *ngIf="chatItemsLoading"
+    color="primary"
+    mode="indeterminate">
+  </md-progress-bar>
 </section>
 
