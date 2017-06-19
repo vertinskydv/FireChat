@@ -8,6 +8,7 @@ import { IMPLEMENT_STORE,
          SELECT_CURRENT_CHAT,
          REFRESH_CHAT_LIST,
          ADD_INITIAL_MESSAGES,
+         UPDATE_CHAT_LIST_QUANTITY
           } from './actions';
 
 export function chatState (state: any = {}, action: Action) {
@@ -27,20 +28,22 @@ export function chatState (state: any = {}, action: Action) {
     case CHANGE_LOGIN_STATUS:
       return Object.assign({}, state, {'user': action.payload});
 
-    case UPDATE_CHAT_LIST:
-      return Object.assign({}, state, {'chatIDList': action.payload});
-
     case SELECT_CURRENT_CHAT:
       return Object.assign({}, state, {'currentChatID': action.payload});
 
     case REFRESH_CHAT_LIST: {
+      return Object.assign({}, state, {'chatDateIDList': action.payload});
+    }
+
+    case  UPDATE_CHAT_LIST_QUANTITY: {
       let newState = Object.assign({}, state);
-      let chatItemList: Array<any> = [];
-      for (let key in action.payload) {
-        chatItemList.push(action.payload[key]);
-        newState.chat[action.payload[key]] = {};
+      if (newState.hasOwnProperty('chatListQuantity')) {
+        newState.chatListQuantity += action.payload;
+      } else {
+        newState.chatListQuantity = action.payload;
       }
-      return Object.assign({}, state, {'chatIDList': action.payload, 'chatIDListArray': chatItemList});
+      return newState;
+
     }
 
     case ADD_INITIAL_MESSAGES: {
