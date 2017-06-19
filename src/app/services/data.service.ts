@@ -54,15 +54,13 @@ export class DataService {
   }
 
 
-  listenChatList() {
+  listenChatListUpdate() {
+    let self = this;
     return Observable.create((observer) => {
-      firebase.database().ref('/users/' + this.storeData.user.uid + '/chats')
-        .orderByValue().limitToLast(this.storeData.chatListQuantity).on('value', obsCallback);
+      firebase.database().ref('/users/' + self.storeData.user.uid + '/chats')
+        .on('child_changed', obsCallback);
       function obsCallback(snapshot) {
-        let userTotalChatsList = snapshot.val();
-        if (userTotalChatsList) {
-          observer.next(userTotalChatsList);
-        }
+          observer.next([snapshot.key, snapshot.val()]);
       }
     });
   }

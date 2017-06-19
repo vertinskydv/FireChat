@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DataService } from 'app/services/data.service';
-import { SELECT_CURRENT_CHAT, REFRESH_CHAT_LIST, UPDATE_CHAT_LIST_QUANTITY } from '../../store/actions';
+import { SELECT_CURRENT_CHAT, REFRESH_CHAT_LIST, SET_INITIAL_CHATLIST_VALUE, CHAT_LIST_ITEM_CHANGE } from '../../store/actions';
 import { Store } from '@ngrx/store';
 import { AppStore } from '../../shared/app-store';
 
@@ -26,29 +26,15 @@ export class ChatAreaComponent implements OnInit {
   getInitialChatList() {
     this.ds.getInitialChatList().subscribe(data => {
       let sortableData = this.sortChatListByTime(data);
-      this._store.dispatch({type: REFRESH_CHAT_LIST, payload: sortableData});
-      this._store.dispatch({type: UPDATE_CHAT_LIST_QUANTITY, payload: sortableData.length});
-      this.listenChatList();
+      this._store.dispatch({type: SET_INITIAL_CHATLIST_VALUE, payload: sortableData});
+      this.listenChatListChanges();
     });
   }
 
-  sortChatListByTime(chatList) {
-    let sortable = [];
-    for (let chatKey in chatList) {
-      sortable.push([chatKey, chatList[chatKey]]);
-    }
-    sortable.sort(function(a, b) {
-      return b[1] - a[1];
-    });
-    return sortable;
-  }
-
-
-  listenChatList() {
-    this.ds.listenChatList().subscribe(data => {
-      let sortableData = this.sortChatListByTime(data);
-      this._store.dispatch({type: REFRESH_CHAT_LIST, payload: sortableData});
-      // debugger;
+  listenChatListChanges() {
+    this.ds.listenChatListUpdate().subscribe(data => {
+      debugger;
+      this._store.dispatch({type: CHAT_LIST_ITEM_CHANGE, payload: data});
     });
   }
 
@@ -59,6 +45,18 @@ export class ChatAreaComponent implements OnInit {
 
   selectCurrentChat(event, chaiID: String) {
     this._store.dispatch({type: SELECT_CURRENT_CHAT, payload: chaiID});
+  }
+
+
+  sortChatListByTime(chatList) {
+    let sortable = [];
+    for (let chatKey in chatList) {
+      sortable.push([chatKey, chatList[chatKey]]);
+    }
+    sortable.sort(function(a, b) {
+      return b[1] - a[1];
+    });
+    return sortable;
   }
 
   ngOnInit() {

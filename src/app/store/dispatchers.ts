@@ -8,7 +8,8 @@ import { IMPLEMENT_STORE,
          SELECT_CURRENT_CHAT,
          REFRESH_CHAT_LIST,
          ADD_INITIAL_MESSAGES,
-         UPDATE_CHAT_LIST_QUANTITY
+         SET_INITIAL_CHATLIST_VALUE,
+         CHAT_LIST_ITEM_CHANGE
           } from './actions';
 
 export function chatState (state: any = {}, action: Action) {
@@ -31,19 +32,31 @@ export function chatState (state: any = {}, action: Action) {
     case SELECT_CURRENT_CHAT:
       return Object.assign({}, state, {'currentChatID': action.payload});
 
-    case REFRESH_CHAT_LIST: {
-      return Object.assign({}, state, {'chatDateIDList': action.payload});
+    case SET_INITIAL_CHATLIST_VALUE: {
+      let newState = Object.assign({}, state);
+      newState.chatDateIDList = action.payload;
+      newState.chatListQuantity = action.payload.length;
+
+      return newState;
     }
 
-    case  UPDATE_CHAT_LIST_QUANTITY: {
+    case CHAT_LIST_ITEM_CHANGE: {
+      debugger;
       let newState = Object.assign({}, state);
-      if (newState.hasOwnProperty('chatListQuantity')) {
-        newState.chatListQuantity += action.payload;
-      } else {
-        newState.chatListQuantity = action.payload;
+      let coincidence = newState.chatDateIDList.find((value, index) => {
+        if (value[0] === action.payload[0]) {
+          newState.chatDateIDList.splice(index, 1);
+          return true;
+        }
+        return false;
+      });
+
+      newState.chatDateIDList.unshift(action.payload);
+
+      if (!coincidence) {
+        newState.chatListQuantity ++;
       }
       return newState;
-
     }
 
     case ADD_INITIAL_MESSAGES: {
