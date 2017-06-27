@@ -1,13 +1,14 @@
 <h2 md-dialog-title>Enter a chat name and add members</h2>
 <md-dialog-content>
   <md-input-container class="input">
-    <input mdInput placeholder="Chat Name">
+    <input mdInput #inputName (keyup)="onKeyUpName(inputName.value)" placeholder="Chat Name">
+    <div *ngIf="errors.name">This field is required</div>
   </md-input-container>
   <md-input-container class="input">
     <input mdInput placeholder="Chat Members">
   </md-input-container>
 </md-dialog-content>
 <md-dialog-actions>
-  <button md-button class="cancel-btn">Cancel</button>
-  <button md-raised-button color="primary" class="action-btn">Create Chat</button>
+  <button md-button class="cancel-btn" (click)="onClickCancel()">Cancel</button>
+  <button md-raised-button color="primary" (click)="onClickCreate()" class="action-btn">Create Chat</button>
 </md-dialog-actions>
