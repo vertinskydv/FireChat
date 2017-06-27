@@ -21,6 +21,8 @@ import { ChatAreaComponent } from './components/chat-area/chat-area.component';
 import { chatState } from './store/dispatchers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
+import { AddNewChatDialog } from './components/dialog/dialog.component';
+import { MdDialogModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { StoreModule } from '@ngrx/store';
     MessageAreaComponent,
     InputAreaComponent,
     HeaderComponent,
-    ChatAreaComponent
+    ChatAreaComponent,
+    AddNewChatDialog
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,11 @@ import { StoreModule } from '@ngrx/store';
     StoreModule.provideStore({ chatState: chatState }),
     StoreDevtoolsModule.instrumentOnlyWithExtension({
       maxAge: 5
-    })
+    }),
+    MdDialogModule
+  ],
+  entryComponents: [
+    AddNewChatDialog
   ],
   providers: [],
   bootstrap: [AppComponent]

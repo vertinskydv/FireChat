@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { DataService } from 'app/services/data.service';
+import { MdDialog } from '@angular/material';
+import { AddNewChatDialog } from '../dialog/dialog.component';
 import { SELECT_CURRENT_CHAT,
          REFRESH_CHAT_LIST,
          SET_INITIAL_CHATLIST_VALUE,
@@ -23,6 +25,7 @@ export class ChatAreaComponent implements OnInit {
 
 
   constructor(private _store: Store<AppStore>,
+              public dialog: MdDialog,
               private ds: DataService) {
     this.model$ = _store.select('chatState');
     this.chatDateIDList$ = this.model$.select('chatDateIDList');
@@ -51,6 +54,7 @@ export class ChatAreaComponent implements OnInit {
   }
 
   createNewChat() {
+    let dialogRef = this.dialog.open(AddNewChatDialog)
     let newChatID = this.ds.createNewChat();
     this._store.dispatch({type: SELECT_CURRENT_CHAT, payload: newChatID});
   }
